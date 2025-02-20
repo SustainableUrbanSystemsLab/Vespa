@@ -1,0 +1,7 @@
+*.dll
+*.gha
+*.zip
+/Plugin/bin
+/Plugin/obj
+*.gh
+/Plugin/.vs
