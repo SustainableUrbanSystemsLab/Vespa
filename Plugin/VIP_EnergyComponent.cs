@@ -39,18 +39,17 @@ namespace BuildingEnergyMLVIP
         protected override void RegisterInputParams(GH_Component.GH_InputParamManager pManager)
         {
             pManager.AddTextParameter("Model", "M", "Model", GH_ParamAccess.item);
-            pManager.AddTextParameter("Type", "T", "Type of building", GH_ParamAccess.item);
+            pManager.AddIntegerParameter("Type", "T", "Type of building. 0 = X; 1 = Y; ...", GH_ParamAccess.item);
             pManager.AddIntegerParameter("Shape", "S", "Shape of building", GH_ParamAccess.item);
-            pManager.AddIntegerParameter("Orientation", "O", "Orientation of the building", GH_ParamAccess.item);
+            pManager.AddNumberParameter("Orientation", "O", "Orientation of the building", GH_ParamAccess.item);
             pManager.AddNumberParameter("Height", "H", "Building height", GH_ParamAccess.item);
-            pManager.AddIntegerParameter("Stories", "St", "No. of Storeys", GH_ParamAccess.item);
+            pManager.AddNumberParameter("Stories", "St", "No. of Storeys", GH_ParamAccess.item);
             pManager.AddNumberParameter("WallArea", "WA", "Wall area of Building", GH_ParamAccess.item);
             pManager.AddNumberParameter("WindowArea", "WinA", "Window area of the Building", GH_ParamAccess.item);
             pManager.AddNumberParameter("RoofArea", "RA", "Roof area of the building", GH_ParamAccess.item);
-            pManager.AddTextParameter("EnergyCode", "EC", "Energy code applied", GH_ParamAccess.item);
-            pManager.AddTextParameter("HVAC", "HV", "HVAC System", GH_ParamAccess.item);
+            pManager.AddIntegerParameter("EnergyCode", "EC", "Energy code applied", GH_ParamAccess.item);
+            pManager.AddIntegerParameter("HVAC", "HV", "HVAC System", GH_ParamAccess.item);
 
-            pManager[0].Optional = true;
             pManager[1].Optional = true;
             pManager[2].Optional = true;
             pManager[3].Optional = true;
@@ -69,7 +68,8 @@ namespace BuildingEnergyMLVIP
         protected override void RegisterOutputParams(GH_Component.GH_OutputParamManager pManager)
         {
             //  pManager.AddTextParameter("Input", "I", "Input", GH_ParamAccess.list);
-            pManager.AddTextParameter("Output", "O", "Output", GH_ParamAccess.list);
+            pManager.AddTextParameter("Output MetaData", "OM", "Output MetaData", GH_ParamAccess.list);
+            pManager.AddTextParameter("Output", "O", "Output", GH_ParamAccess.item);
             //pManager.AddNumberParameter("Cooling", "C", "The energy consume for cooling", GH_ParamAccess.item);
             //pManager.AddNumberParameter("Heating", "H", "The energy consume for heating", GH_ParamAccess.item);
         }
@@ -83,16 +83,16 @@ namespace BuildingEnergyMLVIP
         {
             // 1. Read Grasshopper inputs
             string modelpath = "";
-            string type = "";
-            int shape = 5;
-            int orientation = 4;
+            int type = 0;
+            int shape = 0;
+            double orientation = 4;
             double height = 3.0;
             double stories = 1.0;
             double wallarea = 3.0;
             double windowarea = 1.0;
             double roofarea = 2.0;
-            string energycode = "";
-            string hvac = "";
+            int energycode = 0;
+            int hvac = 0;
 
             DA.GetData(0, ref modelpath);
             DA.GetData(1, ref type);
@@ -117,35 +117,47 @@ namespace BuildingEnergyMLVIP
                 session = new InferenceSession(fullPath);
 
                 // 4. Prepare input data (example: 7 numeric features)
-                float shapeF = shape;
-                float orientationF = orientation;
+                float typeF = (float)type;
+                float shapeF = (float)shape;
+                float orientationF = (float)orientation;
                 float heightF = (float)height;
                 float storiesF = (float)stories;
                 float wallareaF = (float)wallarea;
                 float windowareaF = (float)windowarea;
                 float roofareaF = (float)roofarea;
+                float energycodeF = (float)energycode;
+                float hvacF = (float)hvac;
 
                 float[] inputData = new float[]
                 {
-                shapeF,
-                orientationF,
-                heightF,
-                storiesF,
-                wallareaF,
-                windowareaF,
-                roofareaF
+                    typeF,
+                    shapeF,
+                    orientationF,
+                    heightF,
+                    storiesF,
+                    wallareaF,
+                    windowareaF,
+                    roofareaF,
+                    energycodeF,
+                    hvacF
                 };
 
                 // Shape [1, 7] as an example; adjust as needed
                 var inputTensor = new DenseTensor<float>(inputData, new[] { 1, inputData.Length });
 
                 var inputs = new List<NamedOnnxValue>
-            {
+                {
                 // "input" must match the actual input name in your ONNX model
                 NamedOnnxValue.CreateFromTensor("input", inputTensor)
-            };
+                };
 
                 var results = session.Run(inputs);
+                var outp = results.First().AsTensor<float>();
+
+                // If it contains only 1 value, retrieve that value by indexing or .ToArray()
+                float myValue = outp[0];
+                DA.SetData(1, myValue);
+
                 try
                 {
                     // 5. Retrieve the model inference results
