@@ -27,7 +27,7 @@
 
 - **Energy Load Prediction**  
   After the building design is finalized and features are automatically extracted:
-  - The feature vector—containing values like building height, number of stories, wall area, roof area, and window area—is passed into the selected ML model (either user-provided or the default).
+  - The feature vector - containing values like building height, number of stories, wall area, roof area, and window area - is passed into the selected ML model (either user-provided or the default).
   - The model processes these features and outputs predicted values for heating and cooling loads.
   - These predictions help inform design decisions by providing quick, data-driven feedback on the energy performance of the current building configuration.
 
