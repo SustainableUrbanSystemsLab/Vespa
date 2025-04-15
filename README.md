@@ -18,6 +18,12 @@
 - **Automatic Feature Extraction**  
   - The plugin includes a feature extraction module that automatically reads the `.joblib` file and identifies required input features for prediction.
   - Upon model upload, the `.joblib` file is converted into the ONNX format for compatibility with C# in the Rhino SDK environment.
+  - To support automated prediction, we extract relevant building parameters such as:
+    - **Building height** (calculated as the difference between maximum and minimum points along the Y-axis),
+    - **Number of stories** (estimated either by dividing height by a typical floor height or by counting slab elements),
+    - **Wall area**, **roof area**, and **window area** (computed by converting surfaces to Breps, deconstructing them into faces, and summing the dominant faces from each Brep).
+  - These calculations were initially implemented using Grasshopper components. All building elements must be assigned to specific layers—`Wall`, `Slab`, `Window`, and `Roof`—for accurate extraction.
+  - The process was later translated into Python to streamline and automate these computations directly within the plugin workflow, improving both efficiency and consistency.
 
 - **Energy Load Prediction**  
   After building design is complete:
