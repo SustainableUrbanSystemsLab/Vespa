@@ -48,20 +48,31 @@
 
 ## Requirements
 
-- **Rhino 7 or later**
-- **Windows OS** – Required for Rhino and .NET integration
-- **.NET Framework 4.8+** – Compatible with Rhino SDK and ONNX Runtime
-- **Python 3.8+** – Used for model training, feature extraction, and `.joblib` to `.onnx` conversion
-- **scikit-learn ML model (optional)** – If using a custom model, it must be:
-  - Serialized in `.joblib` format
-  - Trained with features compatible with the plugin's extraction schema (e.g., height, stories, wall/roof/window area)
+- **Rhino 7 or later**  
+  Required for plugin installation and use.
+- **Windows OS**  
+  Necessary for Rhino and .NET integration.
+- **.NET Framework 4.8+**  
+  Ensures compatibility with Rhino SDK and plugin features.
+- **Python 3.8+**  
+  Needed for any custom model preprocessing or conversion steps.
+- **Scikit-learn model in `.joblib` format**  
+  If using a custom ML model, ensure your model is serialized as `.joblib` and trained with features that match the plugin’s extraction schema.
 
 ## Tech Stack
 
-- **Rhino SDK (C#)** – Core plugin and geometry interaction
-- **Grasshopper (C#)** – Dynamic UI for model input and inference
-- **ONNX Runtime** – High-performance inference in the C# environment
-- **Python** – Backend for model training, preprocessing, and feature extraction
-- **Joblib** – Serialization for scikit-learn models
-- **sklearn-onnx** – Converts `.joblib` models to `.onnx` format for C# compatibility
-- **NumPy / pandas** – Data processing tools used during feature pipeline preparation
+- **Rhino SDK (C#)**  
+  Core plugin development, geometry handling, and Rhino integration.
+- **Grasshopper (C#)**  
+  Provides the UI and dynamic component architecture for adding/removing inputs based on ONNX model metadata.
+- **Python**  
+  Drives model training, feature extraction, and `.joblib` → `.onnx` conversion pipelines.
+- **ONNX Runtime**  
+  Enables high-performance and cross-platform model inference in the C# environment.
+- **Joblib**  
+  Used for serializing and deserializing scikit-learn ML models.
+- **sklearn-onnx**  
+  Facilitates direct conversion of `.joblib` models to `.onnx`.
+- **NumPy / pandas**  
+  Utilized for data handling during feature extraction and preprocessing.
+
