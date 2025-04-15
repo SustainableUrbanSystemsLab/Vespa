@@ -26,10 +26,10 @@
   - The process was later translated into Python to streamline and automate these computations directly within the plugin workflow, improving both efficiency and consistency.
 
 - **Energy Load Prediction**  
-  After building design is complete:
-  - The plugin extracts relevant building features automatically.
-  - These features are passed into the ML model (user-provided or default).
-  - The model returns heating and cooling load predictions for the current design.
+  After the building design is finalized and features are automatically extracted:
+  - The feature vector—containing values like building height, number of stories, wall area, roof area, and window area—is passed into the selected ML model (either user-provided or the default).
+  - The model processes these features and outputs predicted values for heating and cooling loads.
+  - These predictions help inform design decisions by providing quick, data-driven feedback on the energy performance of the current building configuration.
 
 ## Workflow Overview
 
