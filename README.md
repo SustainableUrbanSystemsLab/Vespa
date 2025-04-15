@@ -48,13 +48,20 @@
 
 ## Requirements
 
-- Rhino 7 or later
-- .NET Framework (compatible with Rhino SDK)
-- Python model (if custom): Must be saved in `.joblib` format and trained with supported input features
+- **Rhino 7 or later**
+- **Windows OS** – Required for Rhino and .NET integration
+- **.NET Framework 4.8+** – Compatible with Rhino SDK and ONNX Runtime
+- **Python 3.8+** – Used for model training, feature extraction, and `.joblib` to `.onnx` conversion
+- **scikit-learn ML model (optional)** – If using a custom model, it must be:
+  - Serialized in `.joblib` format
+  - Trained with features compatible with the plugin's extraction schema (e.g., height, stories, wall/roof/window area)
 
 ## Tech Stack
 
-- **Rhino SDK (C#)** – Core plugin development
-- **Python** – Model training and feature extraction pipeline
-- **ONNX Runtime** – Efficient inference within the C# environment
-- **Joblib** – For serialization of user-uploaded scikit-learn models
+- **Rhino SDK (C#)** – Core plugin and geometry interaction
+- **Grasshopper (C#)** – Dynamic UI for model input and inference
+- **ONNX Runtime** – High-performance inference in the C# environment
+- **Python** – Backend for model training, preprocessing, and feature extraction
+- **Joblib** – Serialization for scikit-learn models
+- **sklearn-onnx** – Converts `.joblib` models to `.onnx` format for C# compatibility
+- **NumPy / pandas** – Data processing tools used during feature pipeline preparation
