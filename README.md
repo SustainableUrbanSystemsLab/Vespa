@@ -48,31 +48,18 @@
 
 ## Requirements
 
-- **Rhino 7 or later**  
-  Required for plugin installation and use.
-- **Windows OS**  
-  Necessary for Rhino and .NET integration.
-- **.NET Framework 4.8+**  
-  Ensures compatibility with Rhino SDK and plugin features.
-- **Python 3.8+**  
-  Needed for any custom model preprocessing or conversion steps.
-- **Scikit-learn model in `.joblib` format**  
-  If using a custom ML model, ensure your model is serialized as `.joblib` and trained with features that match the plugin’s extraction schema.
+- Rhino 7 or later – Required for plugin installation and use.  
+- Windows OS – Necessary for Rhino and .NET integration.  
+- .NET Framework 4.8+ – Ensures compatibility with Rhino SDK and plugin features.  
+- Python 3.8+ – Needed for any custom model preprocessing or conversion steps.  
+- Scikit-learn model in `.joblib` format – If using a custom ML model, ensure your model is serialized as `.joblib` and trained with features that match the plugin’s extraction schema.  
 
 ## Tech Stack
 
-- **Rhino SDK (C#)**  
-  Core plugin development, geometry handling, and Rhino integration.
-- **Grasshopper (C#)**  
-  Provides the UI and dynamic component architecture for adding/removing inputs based on ONNX model metadata.
-- **Python**  
-  Drives model training, feature extraction, and `.joblib` → `.onnx` conversion pipelines.
-- **ONNX Runtime**  
-  Enables high-performance and cross-platform model inference in the C# environment.
-- **Joblib**  
-  Used for serializing and deserializing scikit-learn ML models.
-- **sklearn-onnx**  
-  Facilitates direct conversion of `.joblib` models to `.onnx`.
-- **NumPy / pandas**  
-  Utilized for data handling during feature extraction and preprocessing.
-
+- Rhino SDK (C#) – Core plugin development, geometry handling, and Rhino integration.  
+- Grasshopper (C#) – Provides the UI and dynamic component architecture for adding/removing inputs based on ONNX model metadata.  
+- Python – Drives model training, feature extraction, and `.joblib` → `.onnx` conversion pipelines.  
+- ONNX Runtime – Enables high-performance and cross-platform model inference in the C# environment.  
+- Joblib – Used for serializing and deserializing scikit-learn ML models.  
+- sklearn-onnx – Facilitates direct conversion of `.joblib` models to `.onnx`.  
+- NumPy / pandas – Utilized for data handling during feature extraction and preprocessing.  
