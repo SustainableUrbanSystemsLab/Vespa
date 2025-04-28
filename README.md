@@ -2,7 +2,7 @@
 
 ## Overview
 
-Architects can gauge building energy performance early using the Rhino Energy Prediction Plugin. The plugin embeds a self-contained ONNX runtime directly in Grasshopper.
+Architects can gauge building energy performance early (concept stage) using the Rhino Energy Prediction Plugin. The plugin embeds a self-contained ONNX runtime directly in Grasshopper.
 
 ## Features
 
