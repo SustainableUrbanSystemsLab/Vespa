@@ -36,7 +36,7 @@ Architects can gauge building energy performance early (concept stage) using the
 
 ## Installation
 
-1. Download the `VIPPlugin.gh` file.  
+1. Download the `VIP_Energy_Plugin` folder.  
 2. Copy it to your Grasshopper Libraries folder:
    ```
    %APPDATA%\Grasshopper\Libraries
