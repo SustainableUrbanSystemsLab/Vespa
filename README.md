@@ -1,65 +1,88 @@
-# 25-SP-EnergyPlugin
+# Rhino Energy Prediction Plugin
 
-**25-SP-EnergyPlugin** is a Rhino plugin designed to support architects in making energy-informed design decisions early in the building process. The plugin enables users to create or modify building models and receive predictions for heating and cooling loads using a machine learning (ML) model.
+## Overview
+
+Architects can gauge building energy performance early using the Rhino Energy Prediction Plugin. The plugin embeds a self-contained ONNX runtime directly in Grasshopper.
 
 ## Features
 
-- **Building Creation & Editing**  
-  Users can:
-  - Create buildings from scratch within the Rhino environment.
-  - Use a default pre-loaded building model as a starting point.
-  - Edit any building geometry directly in Rhino.
+- **Model Initialization**  
+  Reads an ONNX model file path and sets up an `InferenceSession` that exposes each input tensor’s name, datatype, and shape.
 
-- **Custom ML Model Support**  
-  Users may:
-  - Load their own machine learning model file in `.joblib` format.
-  - Use the plugin's default pre-trained ML model for energy prediction.
+- **Real-Time Inference**  
+  Packs Grasshopper inputs into dense tensors, executes the ONNX model, and returns the first element of the output array as an energy load estimate.
 
 - **Automatic Feature Extraction**  
-  - The plugin includes a feature extraction module that automatically reads the `.joblib` file and identifies required input features for prediction.
-  - Upon model upload, the `.joblib` file is converted into the ONNX format for compatibility with C# in the Rhino SDK environment.
-  - To support automated prediction, we extract relevant building parameters such as:
-    - **Building height** (calculated as the difference between maximum and minimum points along the Y-axis),
-    - **Number of stories** (estimated either by dividing height by a typical floor height or by counting slab elements),
-    - **Wall area**, **roof area**, and **window area** (computed by converting surfaces to Breps, deconstructing them into faces, and summing the dominant faces from each Brep).
-  - These calculations were initially implemented using Grasshopper components. All building elements must be assigned to specific layers—`Wall`, `Slab`, `Window`, and `Roof`—for accurate extraction.
-  - The process was later translated into Python to streamline and automate these computations directly within the plugin workflow, improving both efficiency and consistency.
+  Companion Python script reads 3D building geometry and computes features such as roof area, window-to-wall ratio, floor area, and number of stories.
 
-- **Energy Load Prediction**  
-  After the building design is finalized and features are automatically extracted:
-  - The feature vector - containing values like building height, number of stories, wall area, roof area, and window area - is passed into the selected ML model (either user-provided or the default).
-  - The model processes these features and outputs predicted values for heating and cooling loads.
-  - These predictions help inform design decisions by providing quick, data-driven feedback on the energy performance of the current building configuration.
+- **Pure C# Runtime**  
+  Runs entirely in .NET via Microsoft’s ONNX Runtime—no Python interpreter required at inference time.
 
-## Workflow Overview
+## Architecture
 
-1. Open Rhino and launch the **25-SP-EnergyPlugin** panel.
-2. Choose to:
-   - Create a new building from scratch, or
-   - Load and edit the default building model.
-3. (Optional) Upload a custom `.joblib` ML model for predictions.
-4. The plugin:
-   - Extracts required features from the ML model.
-   - Converts the model to ONNX for inference.
-5. Once the building is finalized:
-   - Extracts the building features.
-   - Runs inference to predict heating and cooling loads.
-6. View and use the energy predictions to inform further design iterations.
+1. **Component Initialization**  
+   The plugin reads the ONNX model path from the Grasshopper input.  
+   It then creates an `InferenceSession` and retrieves input tensor metadata.
+
+2. **Input Packing**  
+   Grasshopper values are loaded into dense tensors that match the ONNX input shapes.
+
+3. **Model Inference**  
+   The plugin runs the ONNX model with the packed inputs and receives an output array.  
+   The first element of that array is sent to the Grasshopper output.
+
+4. **Feature Extraction Script**  
+   A Python helper extracts building features automatically by classifying layers named `Wall`, `Slab`, `Window`, and `Roof`.
+
+## Installation
+
+1. Download the `VIPPlugin.gh` file.  
+2. Copy it to your Grasshopper Libraries folder:
+   ```
+   %APPDATA%\Grasshopper\Libraries
+   ```
+3. Launch Rhino and open Grasshopper.  
+4. Drag the **VIPPlugin** component from the Params tab onto the canvas.  
+5. Provide the ONNX model file path to the component input.  
+6. View the energy load prediction on the second output parameter.
+
+## Workflow
+
+1. Open Rhino and start Grasshopper.  
+2. Place the VIPPlugin component and connect the ONNX model path.  
+3. Sketch or import a building mass in Rhino.  
+4. Run the feature extraction script to compute geometry parameters.  
+5. Grasshopper packs the inputs and runs the ONNX model.  
+6. Inspect the real-time energy load estimate.
 
 ## Requirements
 
-- Rhino 7 or later – Required for plugin installation and use.  
-- Windows OS – Necessary for Rhino and .NET integration.  
-- .NET Framework 4.8+ – Ensures compatibility with Rhino SDK and plugin features.  
-- Python 3.8+ – Needed for any custom model preprocessing or conversion steps.  
-- Scikit-learn model in `.joblib` format – If using a custom ML model, ensure your model is serialized as `.joblib` and trained with features that match the plugin’s extraction schema.  
+- **Rhino 7+** – Plugin host environment  
+- **Windows OS** – .NET and Rhino SDK compatibility  
+- **.NET Framework 4.8+** – ONNX Runtime support  
+- **Python 3.8+** – Feature extraction and model conversion scripts  
+- **ONNX model file** – Trained energy prediction model  
 
 ## Tech Stack
 
-- Rhino SDK (C#) – Core plugin development, geometry handling, and Rhino integration.  
-- Grasshopper (C#) – Provides the UI and dynamic component architecture for adding/removing inputs based on ONNX model metadata.  
-- Python – Drives model training, feature extraction, and `.joblib` → `.onnx` conversion pipelines.  
-- ONNX Runtime – Enables high-performance and cross-platform model inference in the C# environment.  
-- Joblib – Used for serializing and deserializing scikit-learn ML models.  
-- sklearn-onnx – Facilitates direct conversion of `.joblib` models to `.onnx`.  
-- NumPy / pandas – Utilized for data handling during feature extraction and preprocessing.  
+- **Rhino SDK (C#)** – Core plugin development and geometry handling  
+- **Grasshopper (C#)** – Dynamic component architecture  
+- **Microsoft ONNX Runtime** – High-performance model inference  
+- **Python** – Building feature extraction and `.joblib` → `.onnx` conversion  
+- **scikit-learn / sklearn-onnx** – Model training and conversion  
+
+## Roadmap
+
+- **Real-Time EUI Feedback**  
+  Provide energy use intensity updates as users modify height, WWR, and story count.
+
+- **Flexible Model Inputs**  
+  Detect parameter names and types automatically to support multiple climates and typologies.
+
+- **Multi-Format Support**  
+  Add seamless handling of both `.onnx` and `.joblib` models with built-in feature mapping.
+
+- **Map Integration**  
+  Link with an energy prediction map to import existing building geometry and simulate retrofits.
+
+---
