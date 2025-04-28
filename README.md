@@ -39,7 +39,7 @@ Architects can gauge building energy performance early (concept stage) using the
 1. Download the `VIP_Energy_Plugin` folder.  
 2. Copy it to your Grasshopper Libraries folder:
    ```
-   %C:\Users\YourUserName\AppData\Roaming\Grasshopper\Libraries
+   C:\Users\YourUserName\AppData\Roaming\Grasshopper\Libraries
    ```
 3. Launch Rhino and open Grasshopper.  
 4. Drag the **VIPPlugin** component from the Params tab onto the canvas.  
