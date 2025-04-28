@@ -85,4 +85,6 @@ Architects can gauge building energy performance early (concept stage) using the
 - **Map Integration**  
   Link with an energy prediction map to import existing building geometry and simulate retrofits.
 
+  - **Custom Tab**  
+  Give PlugIn standalone VIPEnergy tab so that future energy related plugins that work in the Rhino/GH environment may be added to this parent group.
 ---
