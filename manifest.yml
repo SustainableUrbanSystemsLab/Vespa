@@ -1,0 +1,12 @@
+name: Rhino Energy Prediction Plugin
+version: 0.0.1
+authors:
+- Patrick Kastner, Anubha Mahajan, Joseph Aerathu, Jiayi Li, Jessica Hernandez
+description: >
+  Rhino Energy Prediction Plugin is designed to support architects in making energy-informed design decisions early in the building process. The plugin enables users to create or modify building models and receive predictions for heating and cooling loads using a machine learning (ML) model. Architects can gauge building energy performance early (concept stage) using the Rhino Energy Prediction Plugin. The plugin embeds a self-contained ONNX runtime directly in Grasshopper.
+url: https://github.com/SustainableUrbanSystemsLab/EnergyPlugin
+icon:
+keywords:
+- buildings
+- energy
+- machine-learning
