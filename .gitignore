@@ -5,3 +5,6 @@
 /Plugin/obj
 *.gh
 /Plugin/.vs
+.DS_Store
+/Plugin/.idea
+.DS_Store

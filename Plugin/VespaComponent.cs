@@ -8,10 +8,10 @@ using System.IO;
 using Microsoft.ML.OnnxRuntime.Tensors;
 using System.Linq;
 
-namespace BuildingEnergyMLVIP
+namespace VespaCore
 {
     // This component implements IGH_VariableParameterComponent so that its input parameters can be changed dynamically.
-    public class BuildingEnergyMLVIPComponent : GH_Component, IGH_VariableParameterComponent
+    public class VespaComponent : GH_Component, IGH_VariableParameterComponent
     {
         // Store the current model file path.
         private string currentModelPath = "";
@@ -24,10 +24,10 @@ namespace BuildingEnergyMLVIP
         // Maps each ONNX input key (for example, "input") to a list of dynamic parameter names.
         private Dictionary<string, List<string>> inputMapping = new Dictionary<string, List<string>>();
 
-        public BuildingEnergyMLVIPComponent()
-          : base("BuildingEnergyMLVIP", "MLVIP",
+        public VespaComponent()
+          : base("Predict", "Predict",
                 "Predict building energy load using an ONNX model with dynamic inputs",
-                "Params", "General")
+                "Vespa", "Inference")
         {
         }
 
@@ -58,7 +58,7 @@ namespace BuildingEnergyMLVIP
             }
             if (string.IsNullOrEmpty(modelPath) || !File.Exists(modelPath))
             {
-                AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "Invalid model file path.");
+                AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "Model not found.");
                 return;
             }
 
@@ -224,7 +224,7 @@ namespace BuildingEnergyMLVIP
 
         public IGH_Param CreateParameter(GH_ParameterSide side, int index)
         {
-            // Not used—dynamic parameters are created in UpdateDynamicInputs.
+            // Not usedï¿½dynamic parameters are created in UpdateDynamicInputs.
             return null;
         }
 
