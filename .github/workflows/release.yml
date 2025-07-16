@@ -1,4 +1,4 @@
-name: "Deploy release to YAK"
+name: "Deploy Release to YAK"
 on:
   push:
     branches: [ release ]
@@ -12,23 +12,28 @@ jobs:
       - uses: actions/checkout@v3.2.0
       - uses: paramdigma/setup-yak@1.0.0
         with:
-          token: ${{ secrets.YAK_TOKEN }}
+          token: ${{ secrets.YAK_TOKEN_PATRICK }}
 
+      - name: 📝 Update manifest version to beta
+        run: |
+          (Get-Content manifest.yml) -replace '(version:\s+)(\S+)', '$1$2-beta' | Set-Content manifest.yml
+        working-directory: .
+        
       - name: 🦗 Build GH Plugin
         run: |
           dotnet build -c Release
 
       - name: 📋 Copying manifest.yml
         run: |
-          cp manifest.yml Plugin/bin/Release/net7.0-windows
+          cp manifest.yml bin/Release/net7.0-windows
         working-directory: .
 
       - name: 🚧 Build YAK package
         run: yak build
-        working-directory: Plugin/bin/Release/net7.0-windows
+        working-directory: bin/Release/net7.0-windows
 
       - name: 🚀 Deploy to Rhino package manager
         run: |
           $env:YAK_FILE = (Get-ChildItem "./" *.yak -Recurse).fullname
           yak push $env:YAK_FILE
-        working-directory: Plugin/bin/Release/net7.0-windows
+        working-directory: bin/Release/net7.0-windows
