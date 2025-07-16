@@ -12,20 +12,23 @@
 		<TargetExt>.gha</TargetExt>
 		<NoWarn>NU1701;NETSDK1086</NoWarn>
 		<EnableWindowsTargeting>true</EnableWindowsTargeting>
+		<AssemblyName>Vespa</AssemblyName>
+		<RootNamespace>VespaCore</RootNamespace>
+		<Authors>Sustainable Urban Systems Lab</Authors>
 	</PropertyGroup>
 
 	<PropertyGroup>
 		<!-- Specifies information for Assembly and Yak -->
 		<Version>1.0</Version>
-		<Title>VIP_Energy</Title>
-		<Company>VIP_Energy Authors</Company>
-		<Description>Description of VIP_Energy</Description>
+		<Title>Vespa</Title>
+		<Company>Sustainable Urban Systems Lab</Company>
+		<Description></Description>
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Grasshopper" Version="8.15.25013.13001" ExcludeAssets="runtime" />
-		<PackageReference Include="Microsoft.ML.OnnxRuntime" Version="1.20.1" />
-		<PackageReference Include="RhinoCommon" Version="8.15.25013.13001" />
+		<PackageReference Include="Grasshopper" Version="8.19.25132.1001" />
+		<PackageReference Include="Microsoft.ML.OnnxRuntime" Version="1.22.1" />
+		<PackageReference Include="RhinoCommon" Version="8.19.25132.1001" />
 	</ItemGroup>
 
 	<!-- For Windows only builds -->
@@ -41,7 +44,9 @@
 		<!-- Rhino 8.10 and earlier -->
 		<PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies.net48" Version="1.0.3" ExcludeAssets="all" GeneratePathProperty="true" />
 		<Reference Include="$(PkgMicrosoft_NETFramework_ReferenceAssemblies_net48)\build\.NETFramework\v4.8\System.Windows.Forms.dll" Private="False" />
-		<PackageReference Include="System.Drawing.Common" Version="9.0.2" ExcludeAssets="runtime" />
+	</ItemGroup>
+	<ItemGroup Condition="'$(TargetFramework)' == 'net7.0'">
+	  <PackageReference Include="System.Drawing.Common" Version="9.0.7" />
 	</ItemGroup>
 
 </Project>
