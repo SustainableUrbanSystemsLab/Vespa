@@ -25,15 +25,15 @@ jobs:
 
       - name: 📋 Copying manifest.yml
         run: |
-          cp manifest.yml Plugin/bin/Release/net7.0-windows
+          cp manifest.yml bin/Release/net7.0-windows
         working-directory: .
 
       - name: 🚧 Build YAK package
         run: yak build
-        working-directory: Plugin/bin/Release/net7.0-windows
+        working-directory: bin/Release/net7.0-windows
 
       - name: 🚀 Deploy to Rhino package manager
         run: |
           $env:YAK_FILE = (Get-ChildItem "./" *.yak -Recurse).fullname
           yak push $env:YAK_FILE
-        working-directory: Plugin/bin/Release/net7.0-windows
+        working-directory: bin/Release/net7.0-windows
