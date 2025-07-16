@@ -207,6 +207,10 @@ namespace VespaCore
                 }
                 inputMapping[origKey] = dynamicNames;
             }
+
+            // This is the crucial step that was missing.
+            // It tells the Grasshopper canvas to update the component's layout.
+            Params.OnParametersChanged();
         }
 
         #region IGH_VariableParameterComponent Implementation
