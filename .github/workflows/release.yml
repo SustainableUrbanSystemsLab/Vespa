@@ -1,4 +1,4 @@
-name: "Deploy Release to YAK"
+name: "Deploy release via YAK"
 on:
   push:
     branches: [ release ]
@@ -26,6 +26,11 @@ jobs:
       - name: 📋 Copying manifest.yml
         run: |
           cp manifest.yml bin/Release/net7.0-windows
+        working-directory: .
+
+      - name: ✨ Copying icon
+        run: |
+          cp Resources/Logo.png bin/Release/net7.0-windows/Logo.png
         working-directory: .
 
       - name: 🚧 Build YAK package
