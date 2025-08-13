@@ -69,7 +69,11 @@ Rhino Energy Prediction Plugin is designed to support architects in making energ
 - **Grasshopper (C#)** – Dynamic component architecture  
 - **Microsoft ONNX Runtime** – High-performance model inference  
 - **Python** – Building feature extraction and `.joblib` → `.onnx` conversion  
-- **scikit-learn / sklearn-onnx** – Model training and conversion  
+- **scikit-learn / sklearn-onnx** – Model training and conversion
+
+## Deploy via Docker locally 
+
+- `act -j build -P windows-latest=-self-hosted`
 
 ## Roadmap
 
